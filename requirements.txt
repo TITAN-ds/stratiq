@@ -3,3 +3,4 @@ crewai-tools==0.4.6
 streamlit
 python-dotenv
 litellm
+langchain-openai

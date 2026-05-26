@@ -1,39 +1,41 @@
 from crewai import Agent
 from crewai_tools import SerperDevTool
+from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-os.environ["OPENROUTER_API_KEY"] = os.getenv("OPENROUTER_API_KEY")
-os.environ["SERPER_API_KEY"] = os.getenv("SERPER_API_KEY")
+llm = ChatOpenAI(
+    openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+    openai_api_base="https://openrouter.ai/api/v1",
+    model_name="meta-llama/llama-3.3-70b-instruct",
+    temperature=0.7
+)
 
 search_tool = SerperDevTool()
 
-# Agent 1 - The Spy
 spy_agent = Agent(
     role="Competitor Research Specialist",
     goal="Find ALL competitors for the startup idea: {startup_idea} with their pricing and weaknesses",
     backstory="You are an expert market researcher who finds accurate business information from the web.",
     tools=[search_tool],
-    llm="openrouter/meta-llama/llama-3.3-70b-instruct",
+    llm=llm,
     verbose=True
 )
 
-# Agent 2 - The Analyst
 analyst_agent = Agent(
     role="Market Gap Analyst",
     goal="Find the market gap and underserved customers for: {startup_idea}",
     backstory="You are a senior business consultant who specializes in finding market opportunities.",
-    llm="openrouter/meta-llama/llama-3.3-70b-instruct",
+    llm=llm,
     verbose=True
 )
 
-# Agent 3 - The Advisor
 advisor_agent = Agent(
     role="Startup Strategy Advisor",
     goal="Create a clear positioning strategy for: {startup_idea}",
     backstory="You are a startup mentor who gives practical, actionable advice.",
-    llm="openrouter/meta-llama/llama-3.3-70b-instruct",
+    llm=llm,
     verbose=True
 )
