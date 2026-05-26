@@ -1,5 +1,5 @@
-crewai==0.11.2
-crewai-tools==0.4.26
+crewai==0.28.0
+crewai-tools==0.4.6
 streamlit
 python-dotenv
 litellm
